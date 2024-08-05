@@ -13,3 +13,8 @@ fruit[2].style.backgroundColor = 'yellow';
 for(let i = 0; i < fruit.length; i++) {
   fruit[i].style.fontWeight = 'bold';
 }
+const link_items = document.getElementsByTagName('li');
+link_items[4].style.color = 'blue';
+for (let i = 0; i < link_items.length; i++) {
+  link_items[i].style.fontStyle = 'italic';
+}
