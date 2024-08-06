@@ -78,3 +78,42 @@ const basket_heading = document.getElementById('basket-heading');
 div02.insertBefore(p, fruits);
 
 p.id = 'fruits-total';
+
+const form = document.querySelector('form');
+const fruits = document.querySelector('.fruits');
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const fruit_to_add = document.getElementById('fruit-to-add');
+  const list = document.createElement('li');
+  list.className = 'fruit'; // Add the 'fruit' class to the list item
+
+  // Create a span to hold the fruit name
+  const fruitNameSpan = document.createElement('span');
+  fruitNameSpan.textContent = fruit_to_add.value + ' ';
+
+  // Create the delete button
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'delete-btn';
+  deleteButton.textContent = 'x';
+
+  // Create the edit button
+  const editButton = document.createElement('button');
+  editButton.className = 'edit-btn';
+  editButton.textContent = 'Edit';
+
+  // Append the span and buttons to the list item
+  list.appendChild(fruitNameSpan);
+  list.appendChild(deleteButton);
+  list.appendChild(editButton);
+
+  // Append the list item to the fruits list
+  fruits.appendChild(list);
+});
+
+fruits.addEventListener('click', function(event) {
+  if (event.target.classList.contains('delete-btn')) {
+    const fruit_deletion = event.target.parentElement;
+    fruits.removeChild(fruit_deletion);
+  }
+});
