@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Shop</title>
+</head>
+<body>
+    <h1>Candy Shop</h1>
+    <form onsubmit="form_submit(event)">
+        <label for="candy_name">Candy Name</label>
+        <input type="text" id="candy_name" name="candy_name"> <br><br>
+
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description"> <br><br>
+
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" min="0" max="100"> <br><br>
+
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" min="0" max="100"> <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <ul></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"></script>
+    <script>
+        const connect = 'https://crudcrud.com/api/82b78208cc8d422fa3b34fd241d8996d/candy_available';
+
+        function form_submit(event) {
+            event.preventDefault();
+
+            const candy_details = {
+                candy_name: event.target.candy_name.value,
+                description: event.target.description.value,
+                price: parseFloat(event.target.price.value),
+                quantity: parseInt(event.target.quantity.value, 10)
+            };
+
+            axios.post(connect, candy_details)
+                .then((response) => {
+                    display(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            event.target.reset();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            axios.get(connect)
+                .then((response) => {
+                    response.data.forEach(candy => {
+                        display(candy);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
+
+        function display(candy_details) {
+            const candy_list = document.createElement('li');
+            candy_list.textContent = `${candy_details.candy_name} ${candy_details.description} $${candy_details.price} Quantity: ${candy_details.quantity}`;
+            candy_list.id = `candy-${candy_details._id}`;
+
+            const one_button = document.createElement('button');
+            one_button.textContent = 'Buy One';
+            one_button.addEventListener('click', () => update_quantity(candy_details, -1));
+            candy_list.appendChild(one_button);
+
+            const two_button = document.createElement('button');
+            two_button.textContent = 'Buy Two';
+            two_button.addEventListener('click', () => update_quantity(candy_details, -2));
+            candy_list.appendChild(two_button);
+
+            const three_button = document.createElement('button');
+            three_button.textContent = 'Buy Three';
+            three_button.addEventListener('click', () => update_quantity(candy_details, -3));
+            candy_list.appendChild(three_button);
+
+            document.querySelector('ul').appendChild(candy_list);
+        }
+
+        function update_quantity(candy_details, amount) {
+            if (candy_details.quantity + amount < 0) {
+                alert('Insufficient quantity');
+                return;
+            }
+
+            candy_details.quantity += amount;
+
+            axios.put(`${connect}/${candy_details._id}`, candy_details)
+                .then(() => {
+                    const candy_list = document.getElementById(`candy-${candy_details._id}`);
+                    candy_list.firstChild.textContent = `${candy_details.candy_name} ${candy_details.description} $${candy_details.price} Quantity: ${candy_details.quantity}`;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    </script>
+</body>
+</html>
