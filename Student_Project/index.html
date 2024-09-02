@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Manager</title>
+</head>
+<body>
+    
+    <h1>Student Manager</h1>
+    <h3>All Students: </h3>
+
+    <form onsubmit="submitDetails(event)">
+
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name"> <br><br>
+
+        <label for="mobileNumber">Mobile Number: </label>
+        <input type="tel" id="mobileNumber" name="mobileNumber"> <br><br>
+
+        <label for="address">Address: </label>
+        <input type="text" id="address" name="address">
+
+        <button type="submit">Add</button>
+
+    </form>
+
+    <h1>All Students</h1>
+
+    <ul></ul>
+
+    <script src="index.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+</body>
+</html>
