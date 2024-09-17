@@ -5,6 +5,7 @@ const requestHandler = ((req, res) => {
     const method = req.method;
 
     if (url === '/') {
+
         fs.readFile('message.txt', (err, data) => {
             let message = '';
             if (!err && data) {
@@ -25,6 +26,7 @@ const requestHandler = ((req, res) => {
             res.write('</body></html>');
             return res.end();
         });
+
     }
 
     if (url === '/message' && method === 'POST') {
