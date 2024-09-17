@@ -1,9 +1,15 @@
-const http = require('http');
+const express = require('express');
 
-const routs = require('./routes');
+const app = express();
 
-const server = http.createServer(routs);
-
-server.listen(4000, () => {
-    console.log('Server is running on port 4000');
+app.use((req, res, next) => {
+    console.log('In the Middleware');
+    next();
 });
+
+app.use((req, res, next) => {
+    console.log('In another Middleware');
+    res.send('Hello from Express');
+});
+
+app.listen(4000);
